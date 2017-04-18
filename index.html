@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+  <div id="map" style="width:60%;height:60%;"></div>
+  
+  <script>
+    function initMap() {
+      // Inicializar Firebase
+      var config = {
+        apiKey: "XXXXXXXXXXX",
+        authDomain: "XXXXXXXXXX.firebaseapp.com",
+        databaseURL: "https://XXXXXXXXXXXX.firebaseio.com",
+        storageBucket: "XXXXXXXXXXXX.appspot.com",
+        messagingSenderId: "XXXXXXXX"
+      };
+      firebase.initializeApp(config);
+
+      var dbRef = firebase.database().ref().child('GPS/myLatLng');
+      dbRef.on('value', function (snapshot) {
+        var latlng = snapshot.val();
+        marker.setPosition(latlng)
+        map.setCenter(latlng)
+      });
+      
+      // Local inicial
+      var myLatLng = { lat: -22.8177504, lng: -43.2457156 };
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        scrollwheel: false,
+        zoom: 18
+      });
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: myLatLng,
+        title: 'Flutuador'
+      });
+      var map = new google.maps.Map(document.getElementById("map"), map);
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXX&callback=initMap" async
+    defer></script>
+</body>
+
+</html>
