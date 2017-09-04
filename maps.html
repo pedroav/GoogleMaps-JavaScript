@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+  <div id="map" style="width:60%;height:60%;"></div>
+  
+  <script>
+    function initMap() {
+      // Initialize Firebase
+      var config = {
+        apiKey: "API_KEY",
+        authDomain: "URL_FIREBASE",
+        databaseURL: "DATABASE_FIREBASE",
+        storageBucket: "STORAGE_FIREBASE",
+        messagingSenderId: "719294762878"
+      };
+      firebase.initializeApp(config);
+
+      var dbRef = firebase.database().ref().child('GPS/myLatLng');
+      dbRef.on('value', function (snapshot) {
+        var latlng = snapshot.val();
+        marker.setPosition(latlng)
+        map.setCenter(latlng)
+      });
+      
+      // Default
+      var myLatLng = { lat: -22.812660, lng: -43.257352 };
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        scrollwheel: false,
+        zoom: 18
+      });
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: myLatLng,
+        title: 'Maps'
+      });
+      var map = new google.maps.Map(document.getElementById("map"), map);
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key= APIKEY &callback=initMap" async
+    defer></script>
+</body>
+
+</html>
